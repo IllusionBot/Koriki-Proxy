@@ -1,8 +1,9 @@
-# Zaluea
-This is an official proxy of [Zaluea Network](https://discord.gg/8SDaUugBqu).
+# Solar
+This is an official Solar release.
 
 ## Games
 So far there is only one game. More will be added soon.
 
 ## Credits
-Zaluea uses [Ultraviolet](https://github.com/titaniumnetwork-dev/Ultraviolet)
+Solar uses [Ultraviolet](https://github.com/titaniumnetwork-dev/Ultraviolet)
+Forked from Zaluea
