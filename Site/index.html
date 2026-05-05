@@ -2,47 +2,610 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
-    <link rel="icon" type="image/x-icon" href="./Site/images/logo.png">
-    <link rel="stylesheet" href="index.css">
-    <title>Zaluea | Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Koriki · v1.7 | Twilight Core</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-page);
+            color: var(--text-primary);
+            padding: 24px 20px 60px;
+        }
+
+        /* Theme Variables */
+        :root {
+            --bg-page: #f4f7fc;
+            --card-bg: rgba(255, 255, 255, 0.92);
+            --card-border: rgba(148, 163, 184, 0.2);
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --accent-soft: #eef2ff;
+            --shadow: 0 8px 20px rgba(0,0,0,0.03), 0 2px 4px rgba(0,0,0,0.05);
+            --border-radius-card: 20px;
+            --border-radius-element: 14px;
+            --input-bg: #ffffff;
+            --footer-border: #e2e8f0;
+        }
+
+        body.dark {
+            --bg-page: #0b1120;
+            --card-bg: #111827dd;
+            --card-border: #1f2937;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --accent: #60a5fa;
+            --accent-hover: #3b82f6;
+            --accent-soft: #1e293b;
+            --input-bg: #1e293b;
+            --footer-border: #1e2a3e;
+        }
+
+        body.oled {
+            --bg-page: #000000;
+            --card-bg: #0a0a0a;
+            --card-border: #1f1f2e;
+            --text-primary: #ededee;
+            --text-secondary: #a0a0b0;
+            --accent: #3b82f6;
+            --accent-hover: #589eff;
+            --accent-soft: #11161f;
+            --input-bg: #111111;
+            --footer-border: #1c1c2a;
+        }
+
+        body.midnight {
+            --bg-page: #0c1a2f;
+            --card-bg: #0e1a2ad9;
+            --card-border: #233453;
+            --text-primary: #e2e8f0;
+            --text-secondary: #b9c7dd;
+            --accent: #7c9eff;
+            --accent-hover: #628df2;
+            --input-bg: #07121f;
+        }
+
+        body.rose {
+            --bg-page: #fff1f2;
+            --card-bg: #fff0f3e0;
+            --card-border: #fbcfe8;
+            --text-primary: #831843;
+            --text-secondary: #9d174d;
+            --accent: #db2777;
+            --accent-hover: #be185d;
+            --accent-soft: #ffe4ed;
+            --input-bg: #ffffff;
+        }
+
+        body.forest {
+            --bg-page: #eef5e8;
+            --card-bg: #fafef7;
+            --card-border: #cfe3c3;
+            --text-primary: #14532d;
+            --text-secondary: #2d6a4f;
+            --accent: #2e7d32;
+            --accent-hover: #1b5e20;
+            --input-bg: #ffffff;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .logo-area {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        .version-badge {
+            background: var(--accent-soft);
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--accent);
+            margin-left: 10px;
+        }
+
+        .sub {
+            color: var(--text-secondary);
+            margin-top: 6px;
+            font-size: 0.95rem;
+        }
+
+        .proxy-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(2px);
+            border: 1px solid var(--card-border);
+            border-radius: var(--border-radius-card);
+            padding: 1.8rem;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+        }
+
+        .url-input-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        #urlInput {
+            flex: 1;
+            padding: 16px 20px;
+            font-size: 1rem;
+            background: var(--input-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--border-radius-element);
+            color: var(--text-primary);
+            outline: none;
+            font-weight: 500;
+        }
+
+        #urlInput:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent-soft);
+        }
+
+        button {
+            background: var(--accent);
+            border: none;
+            padding: 0 28px;
+            border-radius: var(--border-radius-element);
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: white;
+            cursor: pointer;
+            transition: 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button:hover {
+            background: var(--accent-hover);
+            transform: scale(0.98);
+        }
+
+        .iframe-wrapper {
+            margin-top: 24px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--card-border);
+            background: #0001;
+        }
+
+        #proxyFrame {
+            width: 100%;
+            height: 65vh;
+            border: none;
+            border-radius: 18px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 32px 0 18px 0;
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 18px;
+        }
+
+        .app-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(2px);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 18px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .app-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            background: var(--accent-soft);
+        }
+
+        .app-emoji {
+            font-size: 2.6rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .app-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .media-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(2px);
+            border: 1px solid var(--card-border);
+            border-radius: var(--border-radius-card);
+            padding: 20px;
+            margin-bottom: 28px;
+        }
+
+        .media-title {
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .iframe-media {
+            width: 100%;
+            height: 360px;
+            border-radius: 20px;
+            border: 1px solid var(--card-border);
+            background: #00000010;
+        }
+
+        .settings-panel {
+            background: var(--card-bg);
+            backdrop-filter: blur(4px);
+            border: 1px solid var(--card-border);
+            border-radius: var(--border-radius-card);
+            padding: 1.5rem;
+            margin: 36px 0 24px;
+        }
+
+        .flex-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .theme-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .theme-btn {
+            background: var(--accent-soft);
+            color: var(--text-primary);
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid var(--card-border);
+        }
+
+        .theme-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: transparent;
+        }
+
+        .credits-btn {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 8px 20px;
+        }
+
+        .credits-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(6px);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 28px;
+            max-width: 460px;
+            width: 90%;
+            padding: 2rem;
+            color: var(--text-primary);
+        }
+
+        .close-modal {
+            float: right;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--footer-border);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 720px) {
+            .iframe-media { height: 240px; }
+            #proxyFrame { height: 50vh; }
+        }
+    </style>
 </head>
 <body>
-    <div class="bar">
-        <div class="main_title"><a href="/">andyum</a></div>
-        <div class="button games"><a href="games.html">Games</a></div>
-        <div class="button ytlink" onclick="quickLink('hvtrs8%2F-wuw%2Cymuvu%60e%2Ccmm-')">YouTube</div>
-        <div class="button tabconfig" onclick="settings()">Tab Config</div>
-        <div class="button updates_btn" onclick="updates()">Updates</div>
-        <div class="settings" id="settings">
+<div class="container">
+    <div class="logo-area">
+        <h1>ᴋᴏʀɪᴋɪ <span class="version-badge">v1.7 "Twilight Core"</span></h1>
+        <div class="sub">ultraviolet proxy · forked from Zaluea · highly customizable</div>
+    </div>
 
-            <div class="settingsstuff title_main">Settings</div>
-            <center>
-                <input class="setTitle" placeholder="Title" onkeyup="titleSet(this.value)">
-                <input class="setIco" placeholder="Icon" onkeyup="iconSet(this.value)">
-                <div class="resetButton" onclick="reset()">Reset</div>
-            </center>
+    <!-- Proxy Card -->
+    <div class="proxy-card">
+        <div class="url-input-group">
+            <input type="text" id="urlInput" placeholder="Enter URL or search... (ex: google.com, youtube.com)" autocomplete="off">
+            <button id="goBtn">⟳  GO</button>
         </div>
-        <div class="updates" id="updates">
-            <div class="updatetitle title_updates">Updates</div>
-            <center>
-                <div class="updatespage" id="updatespage"></div>
-            </center>
+        <div class="iframe-wrapper">
+            <iframe id="proxyFrame" src="about:blank" title="Koriki proxy session"></iframe>
+        </div>
+        <p style="font-size: 0.7rem; margin-top: 12px; opacity:0.7;">⚡ Powered by Ultraviolet | Using /service/ prefix with XOR encoding</p>
+    </div>
+
+    <!-- Quick Apps -->
+    <div class="section-title">📦 ʟᴀᴜɴᴄʜᴇʀ</div>
+    <div class="grid" id="appsGrid"></div>
+
+    <!-- Music Player -->
+    <div class="media-card">
+        <div class="media-title">🎵 ᴍᴜꜱɪᴄ ᴘʟᴀʏᴇʀ <span style="font-size:0.7rem;">(double-click title to set URL)</span></div>
+        <iframe class="iframe-media" id="musicIframe" src="about:blank" title="music embed"></iframe>
+    </div>
+
+    <!-- Movies Section -->
+    <div class="media-card">
+        <div class="media-title">🎬 ᴍᴏᴠɪᴇꜱ & ꜱᴛʀᴇᴀᴍɪɴɢ <span style="font-size:0.7rem;">(double-click title to set URL)</span></div>
+        <iframe class="iframe-media" id="movieIframe" src="about:blank" title="movie embed"></iframe>
+    </div>
+
+    <!-- Settings Panel -->
+    <div class="settings-panel">
+        <div class="flex-row">
+            <div style="font-weight: 700;">⚙️ ᴄᴜꜱᴛᴏᴍɪᴢᴇ ᴛʜᴇᴍᴇ</div>
+            <div class="theme-buttons" id="themeSelector">
+                <span data-theme="light" class="theme-btn active">🌞 Light</span>
+                <span data-theme="dark" class="theme-btn">🌙 Dark</span>
+                <span data-theme="oled" class="theme-btn">🖤 OLED</span>
+                <span data-theme="midnight" class="theme-btn">🌌 Midnight</span>
+                <span data-theme="rose" class="theme-btn">🌸 Rose</span>
+                <span data-theme="forest" class="theme-btn">🌲 Forest</span>
+            </div>
+            <button id="showCreditsBtn" class="credits-btn">📜 CREDITS</button>
         </div>
     </div>
-    <div class="title">Ultraviolet</div>
-    <a href="#" target="_parent">Opens the linked document in the parent frame</a>
-    <center>
-        <form>
-            <input placeholder="Type or search a URL">
-            <div class="links">
-        </form>
-    </center>
-    <script src="uv/uv.bundle.js"></script>
-    <script src="uv/uv.config.js"></script>
-    <script src="index.js"></script>
-    <script src="updates.js"></script>
-    <script src="site.js"></script>
+
+    <footer>
+        koriki proxy — educational project | powered by Ultraviolet | forked from Zaluea Network
+    </footer>
+</div>
+
+<!-- Credits Modal -->
+<div id="creditsModal" class="credits-modal">
+    <div class="modal-content">
+        <span class="close-modal" id="closeModalBtn">&times;</span>
+        <h2 style="margin-bottom: 16px;">📜 ᴋᴏʀɪᴋɪ ᴄʀᴇᴅɪᴛꜱ</h2>
+        <p><strong>✨ Main Developer & UI Designer:</strong> _illusion (me!)</p>
+        <p><strong>🧪 Testers:</strong> jakeyboy250 , imtou13</p>
+        <p><strong>⚡ Proxy Core:</strong> Powered by <strong>Ultraviolet</strong> (advanced web proxy)</p>
+        <p><strong>🔁 Fork Origin:</strong> This project is a fork of <strong>Zaluea Network (catc24/Zaluaea)</strong>, rebuilt & enhanced as Koriki.</p>
+        <p><strong>📁 Architecture:</strong> Built on Ultraviolet with XOR encoding, /service/ prefix routing</p>
+        <hr style="margin: 16px 0; border-color: var(--card-border);">
+        <p style="font-size: 0.8rem;">Koriki v1.7 — following Twilight/Sunset legacy (v1.6.8). Squareish design, customizable themes, iframe-ready.</p>
+        <button id="closeModalInner" style="margin-top: 20px; width:100%; justify-content:center;">Close</button>
+    </div>
+</div>
+
+<script>
+    // KORIKI v1.7 - FULLY COMPATIBLE WITH YOUR UV CONFIG
+    // Uses YOUR exact prefix: '/service/' and XOR encoding
+    
+    (function() {
+        const proxyFrame = document.getElementById('proxyFrame');
+        const urlInput = document.getElementById('urlInput');
+        const goBtn = document.getElementById('goBtn');
+        
+        // CRITICAL: Uses your exact UV prefix from uv.config.js
+        const UV_PREFIX = '/service/';
+        
+        function navigateProxy(destination) {
+            if (!destination) return;
+            
+            let target = destination.trim();
+            if (!target.startsWith('http://') && !target.startsWith('https://')) {
+                target = 'https://' + target;
+            }
+            
+            // Your UV expects URL encoded after the prefix
+            const encodedTarget = encodeURIComponent(target);
+            const proxyUrl = UV_PREFIX + encodedTarget;
+            
+            console.log(`[Koriki] Navigating to: ${proxyUrl}`);
+            proxyFrame.src = proxyUrl;
+        }
+        
+        goBtn.addEventListener('click', () => {
+            const raw = urlInput.value;
+            if (raw) navigateProxy(raw);
+        });
+        
+        urlInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') navigateProxy(urlInput.value);
+        });
+        
+        // App Grid Data
+        const apps = [
+            { name: "YouTube", emoji: "📺", url: "youtube.com" },
+            { name: "GitHub", emoji: "🐙", url: "github.com" },
+            { name: "Discord", emoji: "💬", url: "discord.com" },
+            { name: "TikTok", emoji: "📱", url: "tiktok.com" },
+            { name: "Google", emoji: "🔍", url: "google.com" },
+            { name: "Twitter/X", emoji: "🐦", url: "twitter.com" },
+            { name: "Roblox", emoji: "🎮", url: "roblox.com" },
+            { name: "Spotify", emoji: "🎧", url: "open.spotify.com" },
+            { name: "Reddit", emoji: "🤖", url: "reddit.com" },
+            { name: "Twitch", emoji: "📺", url: "twitch.tv" }
+        ];
+        
+        const gridContainer = document.getElementById('appsGrid');
+        function buildAppGrid() {
+            gridContainer.innerHTML = '';
+            apps.forEach(app => {
+                const card = document.createElement('div');
+                card.className = 'app-card';
+                card.innerHTML = `<span class="app-emoji">${app.emoji}</span><span class="app-name">${app.name}</span>`;
+                card.addEventListener('click', () => {
+                    navigateProxy(app.url);
+                    urlInput.value = app.url;
+                });
+                gridContainer.appendChild(card);
+            });
+        }
+        buildAppGrid();
+        
+        // Games Section
+        const gameSectionTitle = document.createElement('div');
+        gameSectionTitle.className = 'section-title';
+        gameSectionTitle.innerHTML = '🎮 ᴛᴡɪʟɪɢʜᴛ ɢᴀᴍᴇꜱ';
+        const gamesGrid = document.createElement('div');
+        gamesGrid.className = 'grid';
+        
+        const games = [
+            { name: 'Flappy Bird', emoji: '🐦', url: 'flappybird.io' },
+            { name: '2048', emoji: '🧩', url: 'play2048.co' },
+            { name: 'Slope', emoji: '⛷️', url: 'slope-game.io' },
+            { name: 'Cookie Clicker', emoji: '🍪', url: 'cookieclicker.com' }
+        ];
+        
+        games.forEach(game => {
+            const card = document.createElement('div');
+            card.className = 'app-card';
+            card.innerHTML = `<span class="app-emoji">${game.emoji}</span><span class="app-name">${game.name}</span>`;
+            card.addEventListener('click', () => navigateProxy(game.url));
+            gamesGrid.appendChild(card);
+        });
+        
+        const musicCard = document.querySelector('.media-card');
+        musicCard.insertAdjacentElement('afterend', gameSectionTitle);
+        gameSectionTitle.insertAdjacentElement('afterend', gamesGrid);
+        
+        // Theme System
+        const themes = ['light', 'dark', 'oled', 'midnight', 'rose', 'forest'];
+        const themeBtns = document.querySelectorAll('[data-theme]');
+        
+        function setTheme(themeName) {
+            document.body.classList.remove(...themes);
+            document.body.classList.add(themeName);
+            localStorage.setItem('koriki_theme', themeName);
+            themeBtns.forEach(btn => {
+                if (btn.getAttribute('data-theme') === themeName) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+        
+        themeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const themeVal = btn.getAttribute('data-theme');
+                setTheme(themeVal);
+            });
+        });
+        
+        const savedTheme = localStorage.getItem('koriki_theme');
+        if (savedTheme && themes.includes(savedTheme)) {
+            setTheme(savedTheme);
+        } else {
+            setTheme('light');
+        }
+        
+        // Credits Modal
+        const modal = document.getElementById('creditsModal');
+        const showBtn = document.getElementById('showCreditsBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const closeInner = document.getElementById('closeModalInner');
+        
+        function openModal() { modal.style.display = 'flex'; }
+        function closeModal() { modal.style.display = 'none'; }
+        
+        showBtn.addEventListener('click', openModal);
+        if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+        if (closeInner) closeInner.addEventListener('click', closeModal);
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+        
+        // Music & Movie iframe customization (double-click titles)
+        const musicFrame = document.getElementById('musicIframe');
+        const movieFrame = document.getElementById('movieIframe');
+        const musicTitle = document.querySelector('.media-card:first-child .media-title');
+        const movieTitle = document.querySelector('.media-card:last-child .media-title');
+        
+        musicTitle.addEventListener('dblclick', () => {
+            let newSrc = prompt('Enter music iframe URL (YouTube embed, radio stream, etc.)', musicFrame.src);
+            if (newSrc && newSrc !== 'about:blank') musicFrame.src = newSrc;
+            else if (newSrc === '') musicFrame.src = 'about:blank';
+        });
+        
+        movieTitle.addEventListener('dblclick', () => {
+            let newSrc = prompt('Enter movie/stream iframe URL', movieFrame.src);
+            if (newSrc && newSrc !== 'about:blank') movieFrame.src = newSrc;
+            else if (newSrc === '') movieFrame.src = 'about:blank';
+        });
+        
+        console.log("Koriki v1.7 loaded — UV config compatible | Prefix: /service/ | Fork: Zaluea");
+        
+        // Expose API
+        window.koriki = {
+            version: '1.7',
+            setTheme: setTheme,
+            navigate: navigateProxy,
+            setMusicSrc: (src) => { musicFrame.src = src; },
+            setMovieSrc: (src) => { movieFrame.src = src; }
+        };
+    })();
+</script>
 </body>
 </html>
